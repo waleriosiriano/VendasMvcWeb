@@ -1,9 +1,16 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using VendasMvcWeb.Data;
+
 var builder = WebApplication.CreateBuilder(args);
+
+// ✅ Troca para MySQL com Pomelo
 builder.Services.AddDbContext<VendasMvcWebContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("VendasMvcWebContext") ?? throw new InvalidOperationException("Connection string 'VendasMvcWebContext' not found.")));
+    options.UseMySql(
+        builder.Configuration.GetConnectionString("VendasMvcWebContext")
+        ?? throw new InvalidOperationException("Connection string 'VendasMvcWebContext' not found."),
+        ServerVersion.AutoDetect(builder.Configuration.GetConnectionString("VendasMvcWebContext"))
+    ));
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -14,7 +21,6 @@ var app = builder.Build();
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
