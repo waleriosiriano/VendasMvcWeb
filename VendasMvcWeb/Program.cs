@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using VendasMvcWeb.Data;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,13 +11,27 @@ builder.Services.AddDbContext<VendasMvcWebContext>(options =>
         ServerVersion.AutoDetect(builder.Configuration.GetConnectionString("VendasMvcWebContext"))
     ));
 
+// ✅ REGISTRA o serviço de seeding
+builder.Services.AddScoped<SeedingService>();
+
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (!app.Environment.IsDevelopment())
+// ✅ O SEED acontece aqui durante o ambiente de desenvolvimento
+if (app.Environment.IsDevelopment())
+{
+    app.UseDeveloperExceptionPage();
+
+    // 👇 resolve o serviço e executa a seed
+    using (var scope = app.Services.CreateScope())
+    {
+        var seedingService = scope.ServiceProvider.GetRequiredService<SeedingService>();
+        seedingService.Seed();
+    }
+}
+else
 {
     app.UseExceptionHandler("/Home/Error");
     app.UseHsts();
