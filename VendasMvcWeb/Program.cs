@@ -1,9 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using VendasMvcWeb.Data;
+using VendasMvcWeb.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// ✅ Troca para MySQL com Pomelo
+//  Troca para MySQL com Pomelo
 builder.Services.AddDbContext<VendasMvcWebContext>(options =>
     options.UseMySql(
         builder.Configuration.GetConnectionString("VendasMvcWebContext")
@@ -11,20 +12,21 @@ builder.Services.AddDbContext<VendasMvcWebContext>(options =>
         ServerVersion.AutoDetect(builder.Configuration.GetConnectionString("VendasMvcWebContext"))
     ));
 
-// ✅ REGISTRA o serviço de seeding
+//  REGISTRA o serviço de seeding
 builder.Services.AddScoped<SeedingService>();
+builder.Services.AddScoped<SellerService>();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
 
-// ✅ O SEED acontece aqui durante o ambiente de desenvolvimento
+// O SEED acontece aqui durante o ambiente de desenvolvimento
 if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
 
-    // 👇 resolve o serviço e executa a seed
+    //  resolve o serviço e executa a seed
     using (var scope = app.Services.CreateScope())
     {
         var seedingService = scope.ServiceProvider.GetRequiredService<SeedingService>();
