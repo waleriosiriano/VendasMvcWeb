@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq; // Adicione este using para o .Sum() e .Where()
+using System.Linq; // Adicionei este using para o .Sum() e .Where()
 
 namespace VendasMvcWeb.Models
 {
