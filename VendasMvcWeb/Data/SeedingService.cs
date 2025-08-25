@@ -23,12 +23,12 @@ namespace VendasMvcWeb.Data
             Department d3 = new Department(3, "Books");
             Department d4 = new Department(4, "Fashion");
 
-            Seller s1 = new Seller(1, "Bob Brown", "bob@gmail.com",new DateTime(1998, 4, 21), "1000.00", d1);
-            Seller s2 = new Seller(2, "Maria Green", "maria@gmail.com", new DateTime(1995, 12, 31), "1500.00", d2);
-            Seller s3 = new Seller(3, "Alex Grey", "alex@gmail.com", new DateTime(1990, 1, 15), "2000.00", d3);
-            Seller s4 = new Seller(4, "Ana White", "ana@gmail.com", new DateTime(1985, 6, 10), "2500.00", d4);  
-            Seller s5 = new Seller(5, "John Black", "jhon@gmail.com", new DateTime(1992, 3, 5), "3000.00", d1); 
-            Seller s6 = new Seller(6, "Alice Blue", "alice@gmail.com", new DateTime(1988, 11, 20), "3500.00", d2);
+            Seller s1 = new Seller(1, "Bob Brown", "bob@gmail.com",new DateTime(1998, 4, 21), 1000.00, d1);
+            Seller s2 = new Seller(2, "Maria Green", "maria@gmail.com", new DateTime(1995, 12, 31), 1500.00, d2);
+            Seller s3 = new Seller(3, "Alex Grey", "alex@gmail.com", new DateTime(1990, 1, 15), 2000.00, d3);
+            Seller s4 = new Seller(4, "Ana White", "ana@gmail.com", new DateTime(1985, 6, 10), 2500.00, d4);  
+            Seller s5 = new Seller(5, "John Black", "jhon@gmail.com", new DateTime(1992, 3, 5), 3000.00, d1); 
+            Seller s6 = new Seller(6, "Alice Blue", "alice@gmail.com", new DateTime(1988, 11, 20), 3500.00, d2);
             
             SalesRecord r1 = new SalesRecord(1, new DateTime(2023, 01, 01), 11000.00, SaleStatus.Billed, s1);
             SalesRecord r2 = new SalesRecord(2, new DateTime(2023, 01, 02), 8000.00, SaleStatus.Billed, s2);    
