@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System.Diagnostics;
 using VendasMvcWeb.Models;
+using VendasMvcWeb.Models.ViewModels;
 using VendasMvcWeb.Services;
 
 namespace VendasMvcWeb.Controllers
@@ -55,12 +57,12 @@ namespace VendasMvcWeb.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new { message = "Id Not Provied"});
             }
             var obj = _sellerService.FindById(id.Value);
             if (obj == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new { message = "Id Not Found" });
             }
             return View(obj);
         }
@@ -75,12 +77,12 @@ namespace VendasMvcWeb.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new { message = "Id Not Provided" });
             }
             var obj = _sellerService.FindById(id.Value);
             if (obj == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new { message = "Id Not Found" });
             }
             return View(obj);
         }
@@ -88,12 +90,12 @@ namespace VendasMvcWeb.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new { message = "Id Not Provided" });
             }
             var obj = _sellerService.FindById(id.Value);
             if (obj == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new { message = "Id Not Found" });
             }
             var departments = _departmentService.FindAll() ?? new List<Department>();
             ViewBag.Departments = new SelectList(departments, "Id", "Name", obj.DepartmentId);
@@ -106,7 +108,7 @@ namespace VendasMvcWeb.Controllers
         {
             if (id != seller.Id)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new { message = "Id Mismatch" });
             }
             if (!ModelState.IsValid)
             {
@@ -118,15 +120,24 @@ namespace VendasMvcWeb.Controllers
             {
                 _sellerService.Update(seller);
             }
-            catch (KeyNotFoundException)
+            catch (KeyNotFoundException e)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new { message = e.Message });
             }
-            catch (DbUpdateConcurrencyException)
+            catch (DbUpdateConcurrencyException e)
             {
-                return BadRequest();
+                return RedirectToAction(nameof(Error), new { message = e.Message });
             }
             return RedirectToAction(nameof(Index));
+        }
+        public IActionResult Error(string message)
+        {
+            var viewModel = new ErrorViewModel
+            {
+                Message = message,
+                RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier
+            };
+            return View("Error", viewModel);
         }
     }
 }
