@@ -1,6 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using VendasMvcWeb.Data;
 using VendasMvcWeb.Services;
+using System.Globalization;
+using Microsoft.AspNetCore.Localization;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,6 +24,16 @@ builder.Services.AddScoped<DepartmentService>();
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
+
+var enUS = new CultureInfo("en-US");
+var localizationOptions = new RequestLocalizationOptions
+{
+    DefaultRequestCulture = new RequestCulture(enUS),
+    SupportedCultures = new List<CultureInfo> { enUS },
+    SupportedUICultures = new List<CultureInfo> { enUS }
+};
+app.UseRequestLocalization(localizationOptions);
+
 
 // O SEED acontece aqui durante o ambiente de desenvolvimento
 if (app.Environment.IsDevelopment())
@@ -52,3 +65,4 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();
+
