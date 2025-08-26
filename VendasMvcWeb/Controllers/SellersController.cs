@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using VendasMvcWeb.Models;
 using VendasMvcWeb.Services;
 
@@ -82,6 +83,50 @@ namespace VendasMvcWeb.Controllers
                 return NotFound();
             }
             return View(obj);
+        }
+        public IActionResult Edit(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var obj = _sellerService.FindById(id.Value);
+            if (obj == null)
+            {
+                return NotFound();
+            }
+            var departments = _departmentService.FindAll() ?? new List<Department>();
+            ViewBag.Departments = new SelectList(departments, "Id", "Name", obj.DepartmentId);
+            return View(obj);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Edit(int id, Seller seller)
+        {
+            if (id != seller.Id)
+            {
+                return NotFound();
+            }
+            if (!ModelState.IsValid)
+            {
+                var departments = _departmentService.FindAll() ?? new List<Department>();
+                ViewBag.Departments = new SelectList(departments, "Id", "Name", seller.DepartmentId);
+                return View(seller);
+            }
+            try
+            {
+                _sellerService.Update(seller);
+            }
+            catch (KeyNotFoundException)
+            {
+                return NotFound();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                return BadRequest();
+            }
+            return RedirectToAction(nameof(Index));
         }
     }
 }
