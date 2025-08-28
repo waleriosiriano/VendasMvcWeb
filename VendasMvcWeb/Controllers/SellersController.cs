@@ -20,18 +20,18 @@ namespace VendasMvcWeb.Controllers
         }
 
         // Lista de vendedores
-        public IActionResult Index()
+        public async Task <IActionResult> Index()
         {
-            var list = _sellerService.FindAll();
+            var list = await _sellerService.FindAllAsync();
             return View(list);
         }
 
         // GET: Create
-        public IActionResult Create()
+        public async Task <IActionResult> Create()
         {
             ViewData["Title"] = "Create Seller";
 
-            var departments = _departmentService.FindAll() ?? new List<Department>();
+            var departments = await _departmentService.FindAllAsync() ?? new List<Department>();
             ViewBag.Departments = new SelectList(departments, "Id", "Name");
 
             return View(new Seller());
@@ -40,26 +40,26 @@ namespace VendasMvcWeb.Controllers
         // POST: Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(Seller seller)
+        public async Task <IActionResult> Create(Seller seller)
         {
             if (!ModelState.IsValid)
             {
-                var departments = _departmentService.FindAll() ?? new List<Department>();
+                var departments = await _departmentService.FindAllAsync() ?? new List<Department>();
                 ViewBag.Departments = new SelectList(departments, "Id", "Name");
 
                 return View(seller);
             }
 
-            _sellerService.Insert(seller);
+            await _sellerService.InsertAsync(seller);
             return RedirectToAction(nameof(Index));
         }
-        public IActionResult Delete(int? id)
+        public async Task <IActionResult> Delete(int? id)
         {
             if (id == null)
             {
                 return RedirectToAction(nameof(Error), new { message = "Id Not Provied"});
             }
-            var obj = _sellerService.FindById(id.Value);
+            var obj = await _sellerService.FindByIdAsync(id.Value);
             if (obj == null)
             {
                 return RedirectToAction(nameof(Error), new { message = "Id Not Found" });
@@ -68,43 +68,43 @@ namespace VendasMvcWeb.Controllers
         }
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public IActionResult DeleteConfirmed(int id)
+        public async Task <IActionResult> DeleteConfirmed(int id)
         {
-            _sellerService.Remove(id);
+            await _sellerService.RemoveAsync(id);
             return RedirectToAction(nameof(Index));
         }
-        public IActionResult Details(int? id)
+        public async Task <IActionResult> Details(int? id)
         {
             if (id == null)
             {
                 return RedirectToAction(nameof(Error), new { message = "Id Not Provided" });
             }
-            var obj = _sellerService.FindById(id.Value);
+            var obj = await _sellerService.FindByIdAsync(id.Value);
             if (obj == null)
             {
                 return RedirectToAction(nameof(Error), new { message = "Id Not Found" });
             }
             return View(obj);
         }
-        public IActionResult Edit(int? id)
+        public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
             {
                 return RedirectToAction(nameof(Error), new { message = "Id Not Provided" });
             }
-            var obj = _sellerService.FindById(id.Value);
+            var obj = await _sellerService.FindByIdAsync(id.Value);
             if (obj == null)
             {
                 return RedirectToAction(nameof(Error), new { message = "Id Not Found" });
             }
-            var departments = _departmentService.FindAll() ?? new List<Department>();
+            var departments = await _departmentService.FindAllAsync() ?? new List<Department>();
             ViewBag.Departments = new SelectList(departments, "Id", "Name", obj.DepartmentId);
             return View(obj);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(int id, Seller seller)
+        public async Task<IActionResult> Edit(int id, Seller seller)
         {
             if (id != seller.Id)
             {
@@ -112,13 +112,13 @@ namespace VendasMvcWeb.Controllers
             }
             if (!ModelState.IsValid)
             {
-                var departments = _departmentService.FindAll() ?? new List<Department>();
+                var departments = await _departmentService.FindAllAsync() ?? new List<Department>();
                 ViewBag.Departments = new SelectList(departments, "Id", "Name", seller.DepartmentId);
                 return View(seller);
             }
             try
             {
-                _sellerService.Update(seller);
+                await _sellerService.UpdateAsync(seller);
             }
             catch (KeyNotFoundException e)
             {
