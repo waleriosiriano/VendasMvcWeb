@@ -5,6 +5,7 @@ using System.Diagnostics;
 using VendasMvcWeb.Models;
 using VendasMvcWeb.Models.ViewModels;
 using VendasMvcWeb.Services;
+using VendasMvcWeb.Services.Exceptions;
 
 namespace VendasMvcWeb.Controllers
 {
@@ -53,19 +54,24 @@ namespace VendasMvcWeb.Controllers
             await _sellerService.InsertAsync(seller);
             return RedirectToAction(nameof(Index));
         }
-        public async Task <IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null)
+            try
             {
-                return RedirectToAction(nameof(Error), new { message = "Id Not Provied"});
+                var obj = await _sellerService.FindByIdAsync(id.Value);
+                if (obj == null)
+                {
+                    return RedirectToAction(nameof(Error), new { message = "Id Not Found" });
+                }
+                return View(obj);
             }
-            var obj = await _sellerService.FindByIdAsync(id.Value);
-            if (obj == null)
+            catch (IntegrityException e)
             {
-                return RedirectToAction(nameof(Error), new { message = "Id Not Found" });
+                return RedirectToAction(nameof(Error), new { message = e.Message });
             }
-            return View(obj);
         }
+
+
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task <IActionResult> DeleteConfirmed(int id)

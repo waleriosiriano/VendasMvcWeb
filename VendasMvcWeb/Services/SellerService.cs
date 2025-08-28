@@ -1,6 +1,7 @@
-﻿using VendasMvcWeb.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using VendasMvcWeb.Data;
 using VendasMvcWeb.Models;
-using Microsoft.EntityFrameworkCore;
+using VendasMvcWeb.Services.Exceptions;
 
 namespace VendasMvcWeb.Services
 {
@@ -21,7 +22,7 @@ namespace VendasMvcWeb.Services
         public async Task InsertAsync(Seller obj)
         {
             _context.Add(obj);
-            _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
 
         }
         public async Task<Seller> FindByIdAsync(int id)
@@ -32,11 +33,17 @@ namespace VendasMvcWeb.Services
         }
         public async Task RemoveAsync(int id)
         {
-            var obj = await _context.Seller.FindAsync(id);
-            if (obj != null)
+            try { 
+                var obj = await _context.Seller.FindAsync(id);
+                if (obj != null)
+                {
+                    _context.Seller.Remove(obj);
+                   await _context.SaveChangesAsync();
+                }
+            }
+            catch (DbUpdateException e)
             {
-                _context.Seller.Remove(obj);
-               await _context.SaveChangesAsync();
+                throw new IntegrityException(e.Message);
             }
         }
         public async Task UpdateAsync(Seller obj)
