@@ -2,58 +2,76 @@
 
 @{
     ViewData["Title"] = "Simple Search";
+    // Pegando as datas do ViewData para preencher o formulário
+    var minDate = ViewData["minDate"] as string;
+    var maxDate = ViewData["maxDate"] as string;
 }
 
-<h2>@ViewData["Title"]</h2>
+<div class="container mt-4">
 
-<nav class="navbar navbar-inverse">
-    <div class="container-fluid">
-        <form class="navbar-form navbar-left" role="search">
-            <div class="form-group">
-                <label for="minDate">Min Date</label>
-                <input type="date" class="form-control" name="minDate" value=@ViewData["minDate"] />
-            </div>
-            <div class="form-group">
-                <label for="maxDate">Max Date</label>
-                <input type="date" class="form-control" name="maxDate" value=@ViewData["maxDate"] />
-            </div>
-            <button type="submit" class="btn btn-primary">Filter</button>
-        </form>
-    </div>
-</nav>
+    <h2>@ViewData["Title"]</h2>
+    <hr />
 
-@if (Model.Any())
-{
-    <div class="panel panel-primary">
-        <div class="panel-heading">
-            <h3 class="panel-title">Total sales = @Model.Sum(obj => obj.Amount).ToString("F2")</h3>
+    <div class="card mb-4">
+        <div class="card-header">
+            <h4>Filter</h4>
         </div>
-        <div class="panel-body">
-            <table class="table table-striped table-hover">
-                <thead>
-                    <tr class="success">
-                        <th>@Html.DisplayNameFor(model => model.First().Id)</th>
-                        <th>@Html.DisplayNameFor(model => model.First().Date)</th>
-                        <th>@Html.DisplayNameFor(model => model.First().Seller)</th>
-                        <th>@Html.DisplayNameFor(model => model.First().Seller.Department)</th>
-                        <th>@Html.DisplayNameFor(model => model.First().Amount)</th>
-                        <th>@Html.DisplayNameFor(model => model.First().Status)</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in Model)
-                    {
-                        <tr>
-                            <td>@Html.DisplayFor(modelItem => item.Id)</td>
-                            <td>@Html.DisplayFor(modelItem => item.Date)</td>
-                            <td>@Html.DisplayFor(modelItem => item.Seller.Name)</td>
-                            <td>@Html.DisplayFor(modelItem => item.Seller.Department.Name)</td>
-                            <td>@Html.DisplayFor(modelItem => item.Amount)</td>
-                            <td>@Html.DisplayFor(modelItem => item.Status)</td>
+        <div class="card-body">
+            <form class="row align-items-end">
+                <div class="col-md-4">
+                    <label for="minDate" class="form-label">Min Date</label>
+                    <input type="date" class="form-control" name="minDate" value="@minDate" />
+                </div>
+                <div class="col-md-4">
+                    <label for="maxDate" class="form-label">Max Date</label>
+                    <input type="date" class="form-control" name="maxDate" value="@maxDate" />
+                </div>
+                <div class="col-md-4">
+                    <button type="submit" class="btn btn-primary w-100">Filter</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            @if (Model.Any())
+            {
+                <h4 class="card-title">Total sales = @Model.Sum(obj => obj.Amount).ToString("F2")</h4>
+            }
+            else
+            {
+                <h4 class="card-title">Results</h4>
+            }
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr class="table-dark">
+                            <th>@Html.DisplayNameFor(model => model.First().Id)</th>
+                            <th>@Html.DisplayNameFor(model => model.First().Date)</th>
+                            <th>@Html.DisplayNameFor(model => model.First().Seller)</th>
+                            <th>@Html.DisplayNameFor(model => model.First().Seller.Department)</th>
+                            <th>@Html.DisplayNameFor(model => model.First().Amount)</th>
+                            <th>@Html.DisplayNameFor(model => model.First().Status)</th>
                         </tr>
-                    }
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@Html.DisplayFor(modelItem => item.Id)</td>
+                                <td>@Html.DisplayFor(modelItem => item.Date)</td>
+                                <td>@Html.DisplayFor(modelItem => item.Seller.Name)</td>
+                                <td>@Html.DisplayFor(modelItem => item.Seller.Department.Name)</td>
+                                <td>@Html.DisplayFor(modelItem => item.Amount)</td>
+                                <td>@Html.DisplayFor(modelItem => item.Status)</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
-}
+</div>

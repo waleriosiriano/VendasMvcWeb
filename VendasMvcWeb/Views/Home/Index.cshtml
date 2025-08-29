@@ -2,7 +2,90 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="px-4 py-5 my-5 text-center">
+    <h1 class="display-4 fw-bold">🛒 VendasMvcWeb</h1>
+    <div class="col-lg-8 mx-auto">
+        <p class="lead mb-4">
+            Sistema de gerenciamento de vendas desenvolvido com ASP.NET Core MVC. Este projeto demonstra a aplicação de conceitos de arquitetura MVC, integração com banco de dados e funcionalidades comerciais.
+        </p>
+    </div>
 </div>
+
+<div class="container">
+    <div class="row g-4">
+
+        <div class="col-md-6">
+            <div class="card h-100">
+                <div class="card-header">
+                    <h4>📌 Funcionalidades</h4>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">Cadastro de vendedores</li>
+                        <li class="list-group-item">Cadastro de departamentos</li>
+                        <li class="list-group-item">Registro de vendas</li>
+                        <li class="list-group-item">Consulta de vendas por período</li>
+                        <li class="list-group-item">Relatórios dinâmicos</li>
+                        <li class="list-group-item">Validação de dados e tratamento de exceções</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card h-100">
+                <div class="card-header">
+                    <h4>🧰 Tecnologias Utilizadas</h4>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">ASP.NET Core MVC</li>
+                        <li class="list-group-item">Entity Framework Core</li>
+                        <li class="list-group-item">MySQL</li>
+                        <li class="list-group-item">Bootstrap 5</li>
+                        <li class="list-group-item">LINQ</li>
+                        <li class="list-group-item">Razor Views</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4>🏗️ Estrutura do Projeto</h4>
+                </div>
+                <div class="card-body">
+                    <p>O projeto segue o padrão MVC:</p>
+                    <ul>
+                        <li><strong>Model:</strong> Classes que representam as entidades do sistema (Seller, Department, SalesRecord).</li>
+                        <li><strong>View:</strong> Páginas Razor responsáveis pela interface com o usuário.</li>
+                        <li><strong>Controller:</strong> Lógica de controle que conecta as views aos modelos e gerencia as requisições.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4>🚀 Como Executar</h4>
+                </div>
+                <div class="card-body">
+                    <ol>
+                        <li>
+                            <p>Clone o repositório:</p>
+                            <pre class="bg-light p-2 rounded"><code>git clone https://github.com/waleriosiriano/VendasMvcWeb.git</code></pre>
+                        </li>
+                        <li>Abra o projeto no Visual Studio.</li>
+                        <li>Configure a string de conexão com seu banco de dados MySQL no arquivo <strong>appsettings.json</strong>.</li>
+                        <li>Execute as migrações do Entity Framework Core.</li>
+                        <li>Inicie o projeto.</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<br />
